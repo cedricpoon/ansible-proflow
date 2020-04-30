@@ -8,20 +8,20 @@
 # For positive provision please update main.present.yml
 # For negative provision please update main.absent.yml
 
-- name: ansible-proflow {{ version }} | check present
+- name: ansible-proflow v0.1.1 | check present
   stat: 
     path: "{{ role_path }}/tasks/main.present.yml"
   register: __present__
 
-- name: ansible-proflow {{ version }} | check absent
+- name: ansible-proflow v0.1.1 | check absent
   stat: 
     path: "{{ role_path }}/tasks/main.absent.yml"
   register: __absent__
 
-- name: ansible-proflow {{ version }} | behave as present
+- name: ansible-proflow v0.1.1 | behave as present
   include_tasks: "main.present.yml"
   when: (state | default('present') == 'present') and __present__.stat.exists
 
-- name: ansible-proflow {{ version }} | behave as absent
+- name: ansible-proflow v0.1.1 | behave as absent
   include_tasks: "main.absent.yml"
   when: (state | default('present') == 'absent') and __absent__.stat.exists
