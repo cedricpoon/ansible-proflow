@@ -2,6 +2,12 @@
 #####################################################
 # PLEASE DO NOT MODIFY OR MAINTAIN AT YOUR OWN RISK #
 #####################################################
+
+# ansible-proflow v0.1.0
+
+# For positive provision please update main.present.yml
+# For negative provision please update main.absent.yml
+
 - stat: 
     path: "{{ role_path }}/tasks/main.present.yml"
   register: __present__
