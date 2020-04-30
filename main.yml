@@ -20,4 +20,4 @@
   when: (state | default('present') == 'present') and __present__.stat.exists
 
 - include_tasks: "main.absent.yml"
-  when: (state | default('present') == 'absent') and __present__.stat.exists
+  when: (state | default('present') == 'absent') and __absent__.stat.exists
