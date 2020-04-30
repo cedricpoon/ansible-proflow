@@ -1,0 +1,17 @@
+---
+#####################################################
+# PLEASE DO NOT MODIFY OR MAINTAIN AT YOUR OWN RISK #
+#####################################################
+- stat: 
+    path: "{{ role_path }}/tasks/main.present.yml"
+  register: __present__
+
+- stat: 
+    path: "{{ role_path }}/tasks/main.absent.yml"
+  register: __absent__
+
+- include_tasks: "main.present.yml"
+  when: (state | default('present') == 'present') and __present__.stat.exists
+
+- include_tasks: "main.absent.yml"
+  when: (state | default('present') == 'absent') and __present__.stat.exists
