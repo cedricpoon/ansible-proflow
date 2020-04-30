@@ -3,21 +3,25 @@
 # PLEASE DO NOT MODIFY OR MAINTAIN AT YOUR OWN RISK #
 #####################################################
 
-# ansible-proflow v0.1.0
+# ansible-proflow v0.1.1
 
 # For positive provision please update main.present.yml
 # For negative provision please update main.absent.yml
 
-- stat: 
+- name: ansible-proflow {{ version }} | check present
+  stat: 
     path: "{{ role_path }}/tasks/main.present.yml"
   register: __present__
 
-- stat: 
+- name: ansible-proflow {{ version }} | check absent
+  stat: 
     path: "{{ role_path }}/tasks/main.absent.yml"
   register: __absent__
 
-- include_tasks: "main.present.yml"
+- name: ansible-proflow {{ version }} | behave as present
+  include_tasks: "main.present.yml"
   when: (state | default('present') == 'present') and __present__.stat.exists
 
-- include_tasks: "main.absent.yml"
+- name: ansible-proflow {{ version }} | behave as absent
+  include_tasks: "main.absent.yml"
   when: (state | default('present') == 'absent') and __absent__.stat.exists
