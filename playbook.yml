@@ -4,12 +4,13 @@
   gather_facts: no
 
   vars:
-    # Indicates whenever `apply.yml` applies to single tasks folder (option `no`)
-    # or multiple tasks folder for different roles (option `yes`)
-    multiple: no
+    # Indicates whenever `main.yml` applies to current working directory (option `yes`)
+    # or multiple tasks folder for roles in current working directory (option `no`)
+    current: yes
+
     # A list for remote role folders for applying `main.yml`
     # Empty list for applying to all role folders
-    # Only used when `local == 'no'`
+    # Only used when `current == 'no'`
     target: []
 
   tasks:
@@ -17,19 +18,19 @@
         file: "galaxy.yml"
     
     - debug:
-        msg: "ansible-proflow v{{ version }} 'apply' playbook for roles"
+        msg: "Applying {{ name }} v{{ version }} | Please view playbook.yml for EXTRA_VARS info"
 
-    - name: proflow | apply in local tasks
+    - name: proflow | apply in current working directory
       set_fact:
         __to__:
           - "{{ playbook_dir }}"
-      when: not multiple | bool
+      when: current | bool
 
     - name: proflow | apply in specific role tasks
       set_fact:
         __to__: "{{ target | map('regex_replace', '^(.*)$', playbook_dir + '/roles/\\1') | list }}"
       when:
-        - multiple | bool
+        - not current | bool
         - target | length > 0
 
     - find:
@@ -37,18 +38,15 @@
         file_type: directory
       register: __roles__
       when:
-        - multiple | bool
+        - not current | bool
         - target | length == 0
 
     - name: proflow | apply in all role tasks
       set_fact:
         __to__: "{{ __roles__ | json_query(\"files[].path\") }}"
       when:
-        - multiple | bool
+        - not current | bool
         - target | length == 0
-
-    - debug:
-        var: __to__
 
     - include_tasks:
         file: tasks/role.yml

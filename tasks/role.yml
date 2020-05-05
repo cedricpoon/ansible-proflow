@@ -1,44 +1,53 @@
 ---
-- name: proflow | check for tasks/
+- name: proflow - {{ __role_dir__ | basename }} | check for tasks
   stat:
     path: "{{ __role_dir__ }}/tasks"
   register: __tasks__
 
 - fail:
-    msg: "tasks/ not exists"
+    msg: "{{ __role_dir__ | basename }}/tasks not exists"
   when: not __tasks__.stat.exists
 
-- name: proflow | check for existing main.yml
+- name: proflow - {{ __role_dir__ | basename }} | check for existing main.yml
   stat:
     path: "{{ __role_dir__ }}/tasks/main.yml"
-  register: __old__
+  register: __main__
+
+- name: proflow - {{ __role_dir__ | basename }} | check for existing main.present.yml
+  stat:
+    path: "{{ __role_dir__ }}/tasks/main.present.yml"
+  register: __main_present__
 
 - set_fact:
-    __signed__: "{{ lookup('file', 'disclaimer.txt') in lookup('file', '{{ __role_dir__ }}/tasks/main.yml') }}"
+    __signed__: "{{ lookup('file', 'disclaimer.txt') in lookup('file', '{{ __role_dir__ }}/tasks/main.yml', skip=True) }}"
+  when: __main__.stat.exists
 
-- name: proflow | copy main.yml -> main.present.yml
+- name: proflow - {{ __role_dir__ | basename }} | copy main.yml -> main.present.yml
   copy:
     remote_src: yes
     src: "{{ __role_dir__ }}/tasks/main.yml"
     dest: "{{ __role_dir__ }}/tasks/main.present.yml"
   when: 
-    - __old__.stat.exists
+    - __main__.stat.exists
     - not __signed__
+    - not __main_present__.stat.exists
   register: __main_present__
 
-- name: proflow | remove old main.yml
+- name: proflow - {{ __role_dir__ | basename }} | remove old main.yml
   file:
     path: "{{ __role_dir__ }}/tasks/main.yml"
     state: absent
-  when:
-    - __main_present__ is succeeded
-  register: __absent_main__
+  when: __signed__ is not defined or __signed__ or __main_present__ is not skipped
+  register: __main__
 
-- name: proflow | apply main.yml to tasks/
+- name: proflow - {{ __role_dir__ | basename }} | apply main.yml to tasks
   copy:
     remote_src: yes
     content: "{{ lookup('template', 'main.yml.j2') }}"
     dest: "{{ __role_dir__ }}/tasks/main.yml"
-  when: 
-    - __tasks__.stat.exists
-    - __absent_main__ is not skipped
+  when: __main__ is not skipped
+  register: __main__
+
+- fail:
+    msg: "proflow cannot be applied to role {{ __role_dir__ | basename }}"
+  when: __main__ is skipped
