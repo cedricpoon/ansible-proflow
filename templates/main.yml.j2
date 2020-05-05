@@ -1,21 +1,20 @@
 ---
-#####################################################
-# PLEASE DO NOT MODIFY OR MAINTAIN AT YOUR OWN RISK #
-#####################################################
+{% include "files/disclaimer.txt" %} 
 
-# ansible-proflow v0.1.2
+# ansible-proflow v{{ version }} | MIT License
+# Built from https://galaxy.ansible.com/cedricpoon/proflow
 
 # For positive provision please update main.present.yml
 # For negative provision please update main.absent.yml
 
 - name: proflow | check present
   stat: 
-    path: "{{ role_path }}/tasks/main.present.yml"
+    path: "{{'{{'}} role_path {{'}}'}}/tasks/main.present.yml"
   register: __present__
 
 - name: proflow | check absent
   stat: 
-    path: "{{ role_path }}/tasks/main.absent.yml"
+    path: "{{'{{'}} role_path {{'}}'}}/tasks/main.absent.yml"
   register: __absent__
 
 - name: proflow | behave as present

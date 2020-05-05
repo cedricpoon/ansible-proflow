@@ -1,0 +1,5 @@
+# ignore all dotted folder
+.*/
+
+# ignore tasks/main
+tasks/main.*yml

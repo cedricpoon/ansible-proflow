@@ -1,0 +1,44 @@
+---
+- name: proflow | check for tasks/
+  stat:
+    path: "{{ __role_dir__ }}/tasks"
+  register: __tasks__
+
+- fail:
+    msg: "tasks/ not exists"
+  when: not __tasks__.stat.exists
+
+- name: proflow | check for existing main.yml
+  stat:
+    path: "{{ __role_dir__ }}/tasks/main.yml"
+  register: __old__
+
+- set_fact:
+    __signed__: "{{ lookup('file', 'disclaimer.txt') in lookup('file', 'tasks/main.yml') }}"
+
+- name: proflow | copy main.yml -> main.present.yml
+  copy:
+    remote_src: yes
+    src: "{{ __role_dir__ }}/tasks/main.yml"
+    dest: "{{ __role_dir__ }}/tasks/main.present.yml"
+  when: 
+    - __old__.stat.exists
+    - not __signed__
+  register: __main_present__
+
+- name: proflow | remove old main.yml
+  file:
+    path: "{{ __role_dir__ }}/tasks/main.yml"
+    state: absent
+  when:
+    - __main_present__ is succeeded
+  register: __absent_main__
+
+- name: proflow | apply main.yml to tasks/
+  copy:
+    remote_src: yes
+    content: "{{ lookup('template', 'main.yml.j2') }}"
+    dest: "{{ __role_dir__ }}/tasks/main.yml"
+  when: 
+    - __tasks__.stat.exists
+    - __absent_main__ is not skipped
