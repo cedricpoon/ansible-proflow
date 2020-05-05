@@ -14,8 +14,7 @@
     target: []
 
   tasks:
-    - include_vars:
-        file: "galaxy.yml"
+    - include_vars: galaxy.yml
     
     - debug:
         msg: "Applying {{ name }} v{{ version }} | Please view playbook.yml for EXTRA_VARS info"

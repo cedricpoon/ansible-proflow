@@ -3,3 +3,9 @@ roles/
 
 # ignore tasks/main
 tasks/main.*yml
+
+# ignore artifact
+*.tar.gz
+
+# ignore generated galaxy.yml
+/galaxy.yml
