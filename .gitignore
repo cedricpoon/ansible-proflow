@@ -1,5 +1,5 @@
-# ignore all dotted folder
-.*/
+# ignore roles
+roles/
 
 # ignore tasks/main
 tasks/main.*yml

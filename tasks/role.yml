@@ -14,7 +14,7 @@
   register: __old__
 
 - set_fact:
-    __signed__: "{{ lookup('file', 'disclaimer.txt') in lookup('file', 'tasks/main.yml') }}"
+    __signed__: "{{ lookup('file', 'disclaimer.txt') in lookup('file', '{{ __role_dir__ }}/tasks/main.yml') }}"
 
 - name: proflow | copy main.yml -> main.present.yml
   copy:
