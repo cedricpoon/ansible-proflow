@@ -1,4 +1,4 @@
-# ansible-proflow
+# proflow
 ![build-deploy](https://github.com/cedricpoon/ansible-proflow/workflows/build-deploy/badge.svg)
 
 Currently Ansible does not contain any kind of conventions for role provisioning / deprovisioning, which leads to either fragmented adoption, or simply no support, on the mentioned flow control.
