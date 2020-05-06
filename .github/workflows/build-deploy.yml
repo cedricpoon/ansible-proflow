@@ -4,12 +4,12 @@ on:
     branches: [ master ]
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: build
+    - name: make galaxy.yml
       run: make galaxy.yml
 
     - name: Build and Deploy Collection
