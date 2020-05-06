@@ -14,9 +14,11 @@
     target: []
 
   tasks:
-    - include_vars: galaxy.src.yml
+    - name: proflow | read vars in galaxy.yml
+      include_vars: galaxy.src.yml
 
-    - set_fact: __current_dir__={{ lookup('env', 'PWD') }}
+    - name: proflow | pwd
+      set_fact: __current_dir__={{ lookup('env', 'PWD') }}
 
     - debug:
         msg: "Applying {{ name }} v{{ version }} | Please view playbook.yml for EXTRA_VARS info"
@@ -34,7 +36,8 @@
         - not current | bool
         - target | length > 0
 
-    - find:
+    - name: proflow | ls roles
+      find:
         paths: "{{ __current_dir__ }}/roles"
         file_type: directory
       register: __roles__
@@ -49,8 +52,7 @@
         - not current | bool
         - target | length == 0
 
-    - include_tasks:
-        file: tasks/role.yml
+    - include_tasks: tasks/role.yml
       loop: "{{ __to__ }}"
       loop_control:
         loop_var: __role_dir__
