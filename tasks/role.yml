@@ -4,7 +4,8 @@
     path: "{{ __role_dir__ }}/tasks"
   register: __tasks__
 
-- fail:
+- name: proflow - {{ __role_dir__ | basename }} | no tasks error
+  fail:
     msg: "{{ __role_dir__ | basename }}/tasks not exists"
   when: not __tasks__.stat.exists
 
@@ -18,7 +19,8 @@
     path: "{{ __role_dir__ }}/tasks/main.present.yml"
   register: __main_present__
 
-- set_fact:
+- name: proflow - {{ __role_dir__ | basename }} | signature check for existing main.yml
+  set_fact:
     __signed__: "{{ lookup('file', 'disclaimer.txt') in lookup('file', '{{ __role_dir__ }}/tasks/main.yml', skip=True) }}"
   when: __main__.stat.exists
 
@@ -27,7 +29,7 @@
     remote_src: yes
     src: "{{ __role_dir__ }}/tasks/main.yml"
     dest: "{{ __role_dir__ }}/tasks/main.present.yml"
-  when: 
+  when:
     - __main__.stat.exists
     - not __signed__
     - not __main_present__.stat.exists
@@ -48,6 +50,7 @@
   when: __main__ is not skipped
   register: __main__
 
-- fail:
+- name: proflow - {{ __role_dir__ | basename }} | apply failure
+  fail:
     msg: "proflow cannot be applied to role {{ __role_dir__ | basename }}"
   when: __main__ is skipped

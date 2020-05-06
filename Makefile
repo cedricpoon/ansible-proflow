@@ -6,3 +6,6 @@ build: clean galaxy.yml
 
 clean:
 	rm -rf galaxy.yml *.tar.gz
+
+lint:
+	ansible-lint
