@@ -11,7 +11,7 @@
     # A list for remote role folders for applying `main.yml`
     # Empty list for applying to all role folders
     # Only used when `current == 'no'`
-    target: []
+    targets: []
 
   tasks:
     - name: proflow | read vars in galaxy.yml
@@ -31,10 +31,10 @@
 
     - name: proflow | apply in specific role tasks
       set_fact:
-        __to__: "{{ target | map('regex_replace', '^(.*)$', __current_dir__ + '/roles/\\1') | list }}"
+        __to__: "{{ targets | map('regex_replace', '^(.*)$', __current_dir__ + '/roles/\\1') | list }}"
       when:
         - not current | bool
-        - target | length > 0
+        - targets | length > 0
 
     - name: proflow | ls roles
       find:
@@ -43,14 +43,14 @@
       register: __roles__
       when:
         - not current | bool
-        - target | length == 0
+        - targets | length == 0
 
     - name: proflow | apply in all role tasks
       set_fact:
         __to__: "{{ __roles__ | json_query(\"files[].path\") }}"
       when:
         - not current | bool
-        - target | length == 0
+        - targets | length == 0
 
     - include_tasks: tasks/role.yml
       loop: "{{ __to__ }}"
