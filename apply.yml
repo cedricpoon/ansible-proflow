@@ -15,25 +15,27 @@
 
   tasks:
     - include_vars: galaxy.src.yml
-    
+
+    - set_fact: __current_dir__={{ lookup('env', 'PWD') }}
+
     - debug:
         msg: "Applying {{ name }} v{{ version }} | Please view playbook.yml for EXTRA_VARS info"
 
     - name: proflow | apply in current working directory
       set_fact:
         __to__:
-          - "{{ playbook_dir }}"
+          - "{{ __current_dir__ }}"
       when: current | bool
 
     - name: proflow | apply in specific role tasks
       set_fact:
-        __to__: "{{ target | map('regex_replace', '^(.*)$', playbook_dir + '/roles/\\1') | list }}"
+        __to__: "{{ target | map('regex_replace', '^(.*)$', __current_dir__ + '/roles/\\1') | list }}"
       when:
         - not current | bool
         - target | length > 0
 
     - find:
-        paths: "{{ playbook_dir }}/roles"
+        paths: "{{ __current_dir__ }}/roles"
         file_type: directory
       register: __roles__
       when:

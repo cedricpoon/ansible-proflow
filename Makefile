@@ -1,7 +1,7 @@
 galaxy.yml:
 	cp ./vars/galaxy.src.yml ./galaxy.yml
 
-build: galaxy.yml
+build: clean galaxy.yml
 	ansible-galaxy collection build -f
 
 clean:
