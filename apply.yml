@@ -47,10 +47,14 @@
 
     - name: proflow | apply in all role tasks
       set_fact:
-        __to__: "{{ __roles__ | json_query(\"files[].path\") }}"
+        __to__: "{{ __to__ | default([]) + [ __roles_file__.path ] }}"
       when:
         - not current | bool
         - targets | length == 0
+      loop: "{{ __roles__.files }}"
+      loop_control:
+        loop_var: __roles_file__
+        label: "{{ __roles_file__.path }}"
 
     - include_tasks: tasks/role.yml
       loop: "{{ __to__ }}"
