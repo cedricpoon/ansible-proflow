@@ -30,6 +30,11 @@ ansible-playbook /directory/to/collection/cedricpoon/proflow/apply.yml
 |-----------|-------------|---------|---------|
 | `current` | Indicates whenever `main.yml` applies to current working directory or roles underneath | `yes` | - |
 | `targets` | A list for remote role folders for applying `main.yml` | `[]` | Empty list for applying to all role folders. Only used when `current == 'no'` |
+
+#### `EXTRA_VARS` in `main.yml`
+| Variable  | Description | Default | Remarks |
+|-----------|-------------|---------|---------|
+| `state` | Signposting the provisioning flow | `present` | - |
 | `rollback` | Task YAML for rollback iff task(s) in `main.present.yml` failed | `undefined` | `state=absent` will be passed to included rollback YAML |
 
 ## API
