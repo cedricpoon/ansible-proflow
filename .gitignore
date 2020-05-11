@@ -9,3 +9,6 @@ tasks/main.*yml
 
 # ignore generated galaxy.yml
 /galaxy.yml
+
+# temp folder
+tmp/
