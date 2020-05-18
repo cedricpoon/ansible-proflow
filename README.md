@@ -23,7 +23,7 @@ ansible-galaxy collection install cedricpoon.proflow
 
 ### Applying via `apply.yml`
 ```sh
-ansible-playbook /directory/to/collection/cedricpoon/proflow/apply.yml
+ansible-playbook ~/.ansible/collections/ansible_collections/cedricpoon/proflow/apply.yml
 ```
 #### `EXTRA_VARS` in `apply.yml`
 | Variable  | Description | Default | Remarks |
