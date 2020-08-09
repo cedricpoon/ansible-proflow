@@ -11,11 +11,13 @@
   stat:
     path: "{{'{{'}} role_path {{'}}'}}/tasks/main.present.yml"
   register: __present__
+  delegate_to: localhost
 
 - name: proflow | check absent
   stat:
     path: "{{'{{'}} role_path {{'}}'}}/tasks/main.absent.yml"
   register: __absent__
+  delegate_to: localhost
 
 - block:
   - name: proflow | behave as present
