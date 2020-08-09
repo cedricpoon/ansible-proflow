@@ -32,6 +32,27 @@ ansible-playbook ~/.ansible/collections/ansible_collections/cedricpoon/proflow/a
 | `current` | Indicates whenever `main.yml` applies to current working directory or roles underneath | `yes` | - |
 | `targets` | A list for remote role folders for applying `main.yml` | `[]` | Empty list for applying to all role folders. Only used when `current == 'no'` |
 
+#### Example
+Folder structure
+```
+roles/
+    common/               # this hierarchy represents a "role"
+        tasks/            #
+            main.yml      #  <-- tasks file can include smaller files if warranted
+...
+```
+##### Using `current`
+```sh
+cd ./roles/common
+
+# current default to be `yes`
+ansible-playbook ~/.ansible/collections/ansible_collections/cedricpoon/proflow/apply.yml
+```
+##### Using `targets`
+```sh
+ansible-playbook ~/.ansible/collections/ansible_collections/cedricpoon/proflow/apply.yml -e '{"targets": ["common"], "current": "no"}'
+```
+
 #### `EXTRA_VARS` in `main.yml`
 | Variable  | Description | Default | Remarks |
 |-----------|-------------|---------|---------|
