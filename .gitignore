@@ -12,3 +12,5 @@ tasks/main.*yml
 
 # temp folder
 tmp/
+
+test.yml

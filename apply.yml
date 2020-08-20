@@ -21,7 +21,7 @@
       set_fact: __current_dir__={{ lookup('env', 'PWD') }}
 
     - debug:
-        msg: "Applying {{ name }} v{{ version }} | Please view playbook.yml for EXTRA_VARS info"
+        msg: "Applying {{ name }} v{{ version }} | Please view apply.yml for EXTRA_VARS info"
 
     - name: proflow | apply in current working directory
       set_fact:

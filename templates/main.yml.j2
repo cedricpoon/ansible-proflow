@@ -7,6 +7,11 @@
 # For positive provision please update main.present.yml
 # For negative provision please update main.absent.yml
 
+- name: proflow | checkout state
+  set_fact:
+    __state__: "{{'{{'}} state | default('present') {{'}}'}}"
+  when: __state__ is not defined
+
 - name: proflow | check present
   stat:
     path: "{{'{{'}} role_path {{'}}'}}/tasks/main.present.yml"
@@ -22,7 +27,7 @@
 - block:
   - name: proflow | behave as present
     include_tasks: "main.present.yml"
-    when: (state | default('present') == 'present') and __present__.stat.exists
+    when: __state__ == 'present' and __present__.stat.exists
   rescue:
     - name: proflow | failure without rollback
       fail:
@@ -30,7 +35,7 @@
       when: rollback is undefined
     - name: proflow | set state to absent for rollback
       set_fact:
-        state: absent
+        __state__: absent
       when: rollback is defined
     - name: proflow | start to rollback
       include_tasks: "{{'{{'}} playbook_dir {{'}}'}}/{{'{{'}} rollback {{'}}'}}"
@@ -40,4 +45,4 @@
 
 - name: proflow | behave as absent
   include_tasks: "main.absent.yml"
-  when: (state | default('present') == 'absent') and __absent__.stat.exists
+  when: __state__ == 'absent' and __absent__.stat.exists
