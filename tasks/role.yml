@@ -29,6 +29,7 @@
     remote_src: yes
     src: "{{ __role_dir__ }}/tasks/main.yml"
     dest: "{{ __role_dir__ }}/tasks/main.present.yml"
+    mode: preserve
   when:
     - __main__.stat.exists
     - not __signed__
@@ -47,6 +48,7 @@
     remote_src: yes
     content: "{{ lookup('template', 'main.yml.j2') }}"
     dest: "{{ __role_dir__ }}/tasks/main.yml"
+    mode: preserve
   when: __main__ is not skipped
   register: __main__
 
