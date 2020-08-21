@@ -12,22 +12,16 @@
     __state__: "{{'{{'}} state | default('present') {{'}}'}}"
   when: __state__ is not defined
 
-- name: proflow | check present
+- name: proflow | check {{'{{'}} __state__ {{'}}'}}
   stat:
-    path: "{{'{{'}} role_path {{'}}'}}/tasks/main.present.yml"
-  register: __present__
-  delegate_to: localhost
-
-- name: proflow | check absent
-  stat:
-    path: "{{'{{'}} role_path {{'}}'}}/tasks/main.absent.yml"
-  register: __absent__
+    path: "{{'{{'}} role_path {{'}}'}}/tasks/main.{{'{{'}} __state__ {{'}}'}}.yml"
+  register: __task__
   delegate_to: localhost
 
 - block:
   - name: proflow | behave as present
     include_tasks: "main.present.yml"
-    when: __state__ == 'present' and __present__.stat.exists
+    when: __state__ == 'present' and __task__stat.exists
   rescue:
     - name: proflow | failure without rollback
       fail:
@@ -43,6 +37,6 @@
     - name: proflow | end of rollback
       meta: end_play
 
-- name: proflow | behave as absent
-  include_tasks: "main.absent.yml"
-  when: __state__ == 'absent' and __absent__.stat.exists
+- name: proflow | behave as {{'{{'}} __state__ {{'}}'}}
+  include_tasks: "main.{{'{{'}} __state__ {{'}}'}}.yml"
+  when: __task__.stat.exists

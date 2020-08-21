@@ -14,29 +14,29 @@
     targets: []
 
   tasks:
-    - name: proflow | read vars in galaxy.yml
+    - name: proflow.apply | read vars in galaxy.yml
       include_vars: galaxy.src.yml
 
-    - name: proflow | pwd
+    - name: proflow.apply | pwd
       set_fact: __current_dir__={{ lookup('env', 'PWD') }}
 
     - debug:
         msg: "Applying {{ name }} v{{ version }} | Please view apply.yml for EXTRA_VARS info"
 
-    - name: proflow | apply in current working directory
+    - name: proflow.apply | apply in current working directory
       set_fact:
         __to__:
           - "{{ __current_dir__ }}"
       when: current | bool
 
-    - name: proflow | apply in specific role tasks
+    - name: proflow.apply | apply in specific role tasks
       set_fact:
         __to__: "{{ targets | map('regex_replace', '^(.*)$', __current_dir__ + '/roles/\\1') | list }}"
       when:
         - not current | bool
         - targets | length > 0
 
-    - name: proflow | ls roles
+    - name: proflow.apply | ls roles
       find:
         paths: "{{ __current_dir__ }}/roles"
         file_type: directory
@@ -45,7 +45,7 @@
         - not current | bool
         - targets | length == 0
 
-    - name: proflow | apply in all role tasks
+    - name: proflow.apply | apply in all role tasks
       set_fact:
         __to__: "{{ __to__ | default([]) + [ __roles_file__.path ] }}"
       when:
