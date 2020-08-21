@@ -22,18 +22,20 @@
   - name: proflow | behave as present
     include_tasks: "main.present.yml"
     when: __state__ == 'present' and __task__.stat.exists
+
   rescue:
     - name: proflow | failure without rollback
       fail:
         msg: failed task in present
-      when: rollback is undefined
+      when: rollback is undefined or rollback | length == 0
+
     - name: proflow | set state to absent for rollback
       set_fact:
         __state__: absent
-      when: rollback is defined
+
     - name: proflow | start to rollback
       include_tasks: "{{'{{'}} playbook_dir {{'}}'}}/{{'{{'}} rollback {{'}}'}}"
-      when: rollback is defined
+
     - name: proflow | end of rollback
       meta: end_play
 
