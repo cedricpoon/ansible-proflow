@@ -19,15 +19,15 @@
   delegate_to: localhost
 
 - block:
-  - name: proflow | behave as present
-    include_tasks: "main.present.yml"
-    when: __state__ == 'present' and __task__.stat.exists
+    - name: proflow | behave as {{'{{'}} __state__ {{'}}'}}
+      include_tasks: "main.{{'{{'}} __state__ {{'}}'}}.yml"
+      when: __task__.stat.exists
 
   rescue:
     - name: proflow | failure without rollback
       fail:
         msg: failed task in present
-      when: rollback is undefined or rollback | length == 0
+      when: rollback is undefined or rollback | length == 0 or __state__ != 'present'
 
     - name: proflow | set state to absent for rollback
       set_fact:
@@ -38,7 +38,3 @@
 
     - name: proflow | end of rollback
       meta: end_play
-
-- name: proflow | behave as {{'{{'}} __state__ {{'}}'}}
-  include_tasks: "main.{{'{{'}} __state__ {{'}}'}}.yml"
-  when: __task__.stat.exists
