@@ -21,7 +21,7 @@
 - block:
   - name: proflow | behave as present
     include_tasks: "main.present.yml"
-    when: __state__ == 'present' and __task__stat.exists
+    when: __state__ == 'present' and __task__.stat.exists
   rescue:
     - name: proflow | failure without rollback
       fail:
