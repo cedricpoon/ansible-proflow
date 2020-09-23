@@ -26,7 +26,7 @@
   rescue:
     - name: proflow | failure without rollback
       fail:
-        msg: failed task in present
+        msg: failed task in {{'{{'}} __state__ {{'}}'}}
       when: rollback is undefined or rollback | length == 0 or __state__ != 'present'
 
     - name: proflow | set state to absent for rollback
