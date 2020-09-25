@@ -1,10 +1,10 @@
 namespace: cedricpoon
 name: proflow
-version: 0.3.7
+version: 0.4.0
 readme: README.md
 authors:
   - Cedric Poon <cedric@poons.me>
-description: ansible-proflow to regulate provisioning flow through state management for roles
+description:  to regulate provisioning flow through state management for roles
 license:
   - MIT
 tags:

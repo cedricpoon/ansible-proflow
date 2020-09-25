@@ -15,7 +15,7 @@
 
   tasks:
     - name: proflow.apply | read vars in galaxy.yml
-      include_vars: galaxy.src.yml
+      include_vars: vars/galaxy.src.yml
 
     - name: proflow.apply | pwd
       set_fact: __current_dir__={{ lookup('env', 'PWD') }}
