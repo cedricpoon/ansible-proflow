@@ -20,19 +20,10 @@
 
 - name: proflow | confirm
   pause:
-    prompt: "Are you sure to perform 'absent' proflow? [yes/no]"
-  register: __confirm__
+    prompt: "Press Enter to perform absent proflow or CTRL-Z & A to exit"
   when: >
-    __state__ == 'absent' and 
-    (no_prompt is not defined or no_prompt == 'no') and
-    (__confirm__ is not defined or __confirm__.skipped is defined)
-
-- name: proflow | halt from confirm
-  meta: end_play
-  when: >
-    __confirm__ is defined and
-    __confirm__.skipped is not defined and
-    __confirm__.user_input != 'yes'
+    __state__ == 'absent' and confirm is not defined
+  register: confirm
 
 - block:
     - name: proflow | behave as {{'{{'}} __state__ {{'}}'}}

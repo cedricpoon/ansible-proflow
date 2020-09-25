@@ -58,7 +58,7 @@ ansible-playbook ~/.ansible/collections/ansible_collections/cedricpoon/proflow/a
 |-----------|-------------|---------|---------| ------- |
 | `state` | Signposting the provisioning flow | `present` | - | [`present`, `absent`]
 | `rollback` | Task YAML for rollback iff task(s) in `main.present.yml` failed | `undefined` | `state=absent` will be passed to included rollback YAML | String path to task yaml |
-| `no_prompt` | Should prompt user when `state=absent` | `undefined` | - | [`yes`, `no`] |
+| `confirm` | Should skip prompt when `state=absent` | `undefined` | - | Any |
 
 ## API
 Proflow will provide and maintain a standardized `main.yml` through playbook `apply.yml`. You need to maintain `main.xxx.yml` for subscription to different provision approaches (e.g. present). All `main.xxx.yml` should be lazily loaded by proflow's `main.yml` (i.e. Not loaded not running without exceptions, if file not exists).
