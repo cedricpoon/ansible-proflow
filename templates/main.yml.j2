@@ -20,7 +20,11 @@
 
 - name: proflow | confirm
   pause:
-    prompt: "Press Enter to perform absent proflow or CTRL-Z & A to exit"
+    prompt: |-
+
+      Tags: {{'{{'}} ansible_run_tags {{'}}'}}
+
+      Press Enter to perform 'state=absent' proflow or CTRL-Z & A to exit
   when: >
     __state__ == 'absent' and confirm is not defined
   register: confirm
