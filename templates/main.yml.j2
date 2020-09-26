@@ -18,16 +18,20 @@
   register: __task__
   delegate_to: localhost
 
-- name: proflow | confirm
+- name: proflow | prompt
   pause:
     prompt: |-
 
       Tags: {{'{{'}} ansible_run_tags {{'}}'}}
 
       Press Enter to perform 'state=absent' proflow or CTRL-Z & A to exit
-  when: >
-    __state__ == 'absent' and confirm is not defined
-  register: confirm
+  when: __state__ == 'absent' and confirm is not defined
+  register: __prompt__
+
+- name: proflow | checkout confirm
+  set_fact:
+    confirm: yes
+  when: __prompt__ is defined and __prompt__.start is defined
 
 - block:
     - name: proflow | behave as {{'{{'}} __state__ {{'}}'}}
