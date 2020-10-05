@@ -24,7 +24,7 @@
 
       Tags: {{'{{'}} ansible_run_tags {{'}}'}}
 
-      Press Enter to perform 'state=absent' proflow or CTRL-Z & A to exit
+      Press Enter to perform 'state=absent' proflow or CTRL-C & A to abort
   when: __state__ == 'absent' and confirm is not defined
   register: __prompt__
 
