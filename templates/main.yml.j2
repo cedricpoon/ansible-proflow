@@ -44,9 +44,10 @@
         msg: failed task in {{'{{'}} __state__ {{'}}'}}
       when: rollback is undefined or rollback | length == 0 or __state__ != 'present'
 
-    - name: proflow | set state to absent for rollback
+    - name: proflow | set rollback status
       set_fact:
         __state__: absent
+        __failed__: "{{'{{'}} ansible_failed_task {{'}}'}}"
 
     - name: proflow | start to rollback
       include_tasks: "{{'{{'}} playbook_dir {{'}}'}}/{{'{{'}} rollback {{'}}'}}"

@@ -1,6 +1,6 @@
 namespace: cedricpoon
 name: proflow
-version: 0.4.4
+version: 0.5.0
 readme: README.md
 authors:
   - Cedric Poon <cedric@poons.me>
