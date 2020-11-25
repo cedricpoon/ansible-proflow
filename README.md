@@ -67,3 +67,11 @@ Proflow will provide and maintain a standardized `main.yml` through playbook `ap
 |------------------|-------------------------------------|
 | `main.present.yml` | Positively provisioning the role    |
 | `main.absent.yml`  | Negatively de-provisioning the role |
+
+### Magic Variables
+Proflow also provides a list of magic variables for reflecting internal changes among current execution.
+
+| Variable  | Description |
+|-----------|-------------|
+| `__state__` | Current inflow state |
+| `__failed__` | `ansible_failed_task` inside proflow |

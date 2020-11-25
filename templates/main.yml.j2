@@ -39,15 +39,18 @@
       when: __task__.stat.exists
 
   rescue:
+    - name: proflow | record failed task info
+      set_fact:
+        __failed__: "{{'{{'}} ansible_failed_task {{'}}'}}"
+
     - name: proflow | failure without rollback
       fail:
         msg: failed task in {{'{{'}} __state__ {{'}}'}}
       when: rollback is undefined or rollback | length == 0 or __state__ != 'present'
 
-    - name: proflow | set rollback status
+    - name: proflow | set state to absent for rollback
       set_fact:
         __state__: absent
-        __failed__: "{{'{{'}} ansible_failed_task {{'}}'}}"
 
     - name: proflow | start to rollback
       include_tasks: "{{'{{'}} playbook_dir {{'}}'}}/{{'{{'}} rollback {{'}}'}}"
