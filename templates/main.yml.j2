@@ -41,7 +41,7 @@
   rescue:
     - name: proflow | record failed task info
       set_fact:
-        __failed__: "{{'{{'}} ansible_failed_task {{'}}'}}"
+        __failed__: "{{'{{'}} ansible_failed_result | combine({ 'role': ansible_role_name }) {{'}}'}}"
 
     - name: proflow | failure without rollback
       fail:

@@ -1,10 +1,10 @@
 namespace: cedricpoon
 name: proflow
-version: 0.5.0
+version: 0.5.1
 readme: README.md
 authors:
   - Cedric Poon <cedric@poons.me>
-description:  to regulate provisioning flow through state management for roles
+description: Proflow to regulate provisioning flow through state management for roles
 license:
   - MIT
 tags:
