@@ -2,6 +2,9 @@
 ![build-deploy](https://github.com/cedricpoon/ansible-proflow/workflows/build-deploy/badge.svg)
 ![lint](https://github.com/cedricpoon/ansible-proflow/workflows/lint/badge.svg)
 
+#### TL;DR
+A *role* and *playbook* **state** enforcer lives as a *templated* **main.yml**
+
 Currently Ansible does not contain any kind of conventions for role provisioning / deprovisioning, which leads to either fragmented adoption, or simply no support, on the mentioned flow control.
 
 This collection aims to regulate ansible role on provisioning flow for different states (i.e. provision as present and deprovision as absent).
